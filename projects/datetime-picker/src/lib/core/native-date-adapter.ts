@@ -285,14 +285,14 @@ export class NgxMatNativeDateAdapter extends NgxMatDateAdapter<Date> {
     return date.getSeconds()
   }
 
-  setHour(date: Date, value: number): void {
-    date.setHours(value);
+  setHour(date:{value: Date}, value: number): void {
+    date.value.setHours(value);
   }
-  setMinute(date: Date, value: number): void {
-    date.setMinutes(value);
+  setMinute(date:{value: Date}, value: number): void {
+    date.value.setMinutes(value);
   }
-  setSecond(date: Date, value: number): void {
-    date.setSeconds(value);
+  setSecond(date:{value: Date}, value: number): void {
+    date.value.setSeconds(value);
   }
 
   /** Creates a date but allows the month and date to overflow. */

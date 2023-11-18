@@ -30,7 +30,7 @@ const appRoutes: Routes = [
       path: 'fileinput',
       loadChildren: () => import('./demo-fileinput/demo-fileinput.module').then(m => m.DemoFileInputModule)
    },
-   { path: '', redirectTo: '/home', pathMatch: 'full' },
+   { path: '', redirectTo: '/datetimepicker', pathMatch: 'full' },
    { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ]
 

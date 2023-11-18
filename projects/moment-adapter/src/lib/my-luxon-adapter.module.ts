@@ -3,25 +3,25 @@
 // import { NgxMatDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { NgModule } from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { NgxMatMomentAdapter, NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS } from './moment-adapter';
-import { NGX_MAT_MOMENT_FORMATS } from './moment-formats';
 import { NgxMatDateAdapter } from 'projects/datetime-picker/src/lib/core/date-adapter';
 import { NGX_MAT_DATE_FORMATS } from 'projects/datetime-picker/src/lib/core/date-formats';
+import { MyLuxonDateAdapter, MAT_LUXON_DATE_ADAPTER_OPTIONS } from './my-luxon-date-adapter';
+import { NGX_MAT_LUXON_FORMATS } from './luxon-formats';
 
 @NgModule({
   providers: [
     {
       provide: NgxMatDateAdapter,
-      useClass: NgxMatMomentAdapter,
-      deps: [MAT_DATE_LOCALE, NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      useClass: MyLuxonDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS]
     }
   ],
 })
-export class NgxMomentDateModule { }
+export class MyNgxLuxonDateModule { }
 
 
 @NgModule({
-  imports: [NgxMomentDateModule],
-  providers: [{ provide: NGX_MAT_DATE_FORMATS, useValue: NGX_MAT_MOMENT_FORMATS }],
+  imports: [MyNgxLuxonDateModule],
+  providers: [{ provide: NGX_MAT_DATE_FORMATS, useValue: NGX_MAT_LUXON_FORMATS }],
 })
-export class NgxMatMomentModule { }
+export class MyNgxMatLuxonModule { }

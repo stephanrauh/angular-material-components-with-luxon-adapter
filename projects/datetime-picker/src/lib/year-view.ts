@@ -172,7 +172,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
 
   /** Handles when a new month is selected. */
   _monthSelected(event: NgxMatCalendarUserEvent<number>) {
-    const month = event.value;
+    const month = event.valueHolder.value;
 
     const selectedMonth = this._dateAdapter.createDate(
       this._dateAdapter.getYear(this.activeDate),
@@ -196,7 +196,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
    * updated value asynchronously via the `activeCell` Input.
    */
   _updateActiveDate(event: NgxMatCalendarUserEvent<number>) {
-    const month = event.value;
+    const month = event.valueHolder.value;
     const oldActiveDate = this._activeDate;
 
     this.activeDate = this._getDateFromMonth(month);
@@ -278,7 +278,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   _handleCalendarBodyKeyup(event: KeyboardEvent): void {
     if (event.keyCode === SPACE || event.keyCode === ENTER) {
       if (this._selectionKeyPressed) {
-        this._monthSelected({ value: this._dateAdapter.getMonth(this._activeDate), event });
+        this._monthSelected({ valueHolder: {value: this._dateAdapter.getMonth(this._activeDate)}, event });
       }
 
       this._selectionKeyPressed = false;

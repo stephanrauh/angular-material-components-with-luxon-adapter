@@ -214,7 +214,7 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
 
   onTimeChanged(selectedDateWithTime: D | null) {
     const userEvent: NgxMatCalendarUserEvent<D | null> = {
-      value: selectedDateWithTime,
+      valueHolder: {value: selectedDateWithTime},
       event: null
     };
 
@@ -234,7 +234,7 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
 
   private _updateUserSelectionWithCalendarUserEvent(event: NgxMatCalendarUserEvent<D | null>) {
     const selection = this._model.selection;
-    const value = event.value;
+    const value = event.valueHolder.value;
     const isRange = selection instanceof NgxDateRange;
 
     // If we're selecting a range and we have a selection strategy, always pass the value through
@@ -264,7 +264,7 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   }
 
   _handleUserDragDrop(event: NgxMatCalendarUserEvent<NgxDateRange<D>>) {
-    this._model.updateSelection(event.value as unknown as S, this);
+    this._model.updateSelection(event.valueHolder.value as unknown as S, this);
   }
 
   _startExitAnimation() {

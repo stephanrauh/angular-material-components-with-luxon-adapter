@@ -12,11 +12,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule, Routes } from '@angular/router';
 import {
   NgxMatDatetimePickerModule,
-  NgxMatNativeDateModule,
   NgxMatTimepickerModule
 } from '../../../projects/datetime-picker/src/public-api';
 import { SharedModule } from '../shared';
 import { DemoDatetimeComponent } from './demo-datetime.component';
+import { MyNgxLuxonDateModule, MyNgxMatLuxonModule } from 'projects/moment-adapter/src/public-api';
 
 const routes: Routes = [
   { path: '', component: DemoDatetimeComponent }
@@ -34,7 +34,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    NgxMatNativeDateModule,
+    MyNgxLuxonDateModule,
+    MyNgxMatLuxonModule,
     MatRadioModule,
     MatSelectModule,
     MatCheckboxModule,

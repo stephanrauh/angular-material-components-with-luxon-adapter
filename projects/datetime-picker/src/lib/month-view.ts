@@ -244,7 +244,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
 
   /** Handles when a new date is selected. */
   _dateSelected(event: NgxMatCalendarUserEvent<number>) {
-    const date = event.value;
+    const date = event.valueHolder.value;
     const selectedDate = this._getDateFromDayOfMonth(date);
     let rangeStartDate: number | null;
     let rangeEndDate: number | null;
@@ -260,7 +260,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
       this.selectedChange.emit(selectedDate);
     }
 
-    this._userSelection.emit({ value: selectedDate, event: event.event });
+    this._userSelection.emit({ valueHolder: {value: selectedDate}, event: event.event });
     this._clearPreview();
     this._changeDetectorRef.markForCheck();
   }
@@ -276,7 +276,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
    * updated value asynchronously via the `activeCell` Input.
    */
   _updateActiveDate(event: NgxMatCalendarUserEvent<number>) {
-    const month = event.value;
+    const month = event.valueHolder.value;
     const oldActiveDate = this._activeDate;
     this.activeDate = this._getDateFromDayOfMonth(month);
 
@@ -350,10 +350,10 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
           // If a drag is in progress, cancel the drag without changing the
           // current selection.
           if (this.activeDrag) {
-            this.dragEnded.emit({ value: null, event });
+            this.dragEnded.emit({ valueHolder: {value: null}, event });
           } else {
             this.selectedChange.emit(null);
-            this._userSelection.emit({ value: null, event });
+            this._userSelection.emit({ valueHolder: {value: null}, event });
           }
           event.preventDefault();
           event.stopPropagation(); // Prevents the overlay from closing.
@@ -378,7 +378,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   _handleCalendarBodyKeyup(event: KeyboardEvent): void {
     if (event.keyCode === SPACE || event.keyCode === ENTER) {
       if (this._selectionKeyPressed && this._canSelect(this._activeDate)) {
-        this._dateSelected({ value: this._dateAdapter.getDate(this._activeDate), event });
+        this._dateSelected({ valueHolder: {value: this._dateAdapter.getDate(this._activeDate)}, event });
       }
 
       this._selectionKeyPressed = false;
@@ -422,7 +422,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   }
 
   /** Called when the user has activated a new cell and the preview needs to be updated. */
-  _previewChanged({ event, value: cell }: NgxMatCalendarUserEvent<NgxMatCalendarCell<D> | null>) {
+  _previewChanged({ event, valueHolder: {value: cell} }: NgxMatCalendarUserEvent<NgxMatCalendarCell<D> | null>) {
     if (this._rangeStrategy) {
       // We can assume that this will be a range, because preview
       // events aren't fired for single date selections.
@@ -437,7 +437,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
 
       if (this.activeDrag && value) {
         const dragRange = this._rangeStrategy.createDrag?.(
-          this.activeDrag.value,
+          this.activeDrag.valueHolder.value,
           this.selected as NgxDateRange<D>,
           value,
           event,
@@ -464,18 +464,18 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   protected _dragEnded(event: NgxMatCalendarUserEvent<D | null>) {
     if (!this.activeDrag) return;
 
-    if (event.value) {
+    if (event.valueHolder.value) {
       // Propagate drag effect
       const dragDropResult = this._rangeStrategy?.createDrag?.(
-        this.activeDrag.value,
+        this.activeDrag.valueHolder.value,
         this.selected as NgxDateRange<D>,
-        event.value,
+        event.valueHolder.value,
         event.event,
       );
 
-      this.dragEnded.emit({ value: dragDropResult ?? null, event: event.event });
+      this.dragEnded.emit({ valueHolder: {value: dragDropResult ?? null}, event: event.event });
     } else {
-      this.dragEnded.emit({ value: null, event: event.event });
+      this.dragEnded.emit({ valueHolder: {value: null}, event: event.event });
     }
   }
 

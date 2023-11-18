@@ -43,7 +43,7 @@ export class NgxMatCalendarCell<D = any> {
 
 /** Event emitted when a date inside the calendar is triggered as a result of a user action. */
 export interface NgxMatCalendarUserEvent<D> {
-  value: D;
+  valueHolder: {value: D};
   event: Event;
 }
 
@@ -186,13 +186,13 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
     }
 
     if (cell.enabled) {
-      this.selectedValueChange.emit({value: cell.value, event});
+      this.selectedValueChange.emit({valueHolder: {value: cell.value}, event});
     }
   }
 
   _emitActiveDateChange(cell: NgxMatCalendarCell, event: FocusEvent): void {
     if (cell.enabled) {
-      this.activeDateChange.emit({value: cell.value, event});
+      this.activeDateChange.emit({valueHolder: {value: cell.value}, event});
     }
   }
 
@@ -385,7 +385,7 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
       const cell = this._getCellFromElement(event.target as HTMLElement);
 
       if (cell) {
-        this._ngZone.run(() => this.previewChange.emit({value: cell.enabled ? cell : null, event}));
+        this._ngZone.run(() => this.previewChange.emit({valueHolder: {value: cell.enabled ? cell : null}, event}));
       }
     }
   };
@@ -406,7 +406,7 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
       event.preventDefault();
     }
 
-    this._ngZone.run(() => this.previewChange.emit({value: cell?.enabled ? cell : null, event}));
+    this._ngZone.run(() => this.previewChange.emit({valueHolder: {value: cell?.enabled ? cell : null}, event}));
   };
 
   /**
@@ -431,7 +431,7 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
           this._getCellFromElement((event as MouseEvent).relatedTarget as HTMLElement)
         )
       ) {
-        this._ngZone.run(() => this.previewChange.emit({value: null, event}));
+        this._ngZone.run(() => this.previewChange.emit({valueHolder: {value: null}, event}));
       }
     }
   };
@@ -452,7 +452,7 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
 
     this._ngZone.run(() => {
       this.dragStarted.emit({
-        value: cell.rawValue,
+        valueHolder: {value: cell.rawValue},
         event,
       });
     });
@@ -466,7 +466,7 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
     if (!cellElement) {
       // Mouseup happened outside of datepicker. Cancel drag.
       this._ngZone.run(() => {
-        this.dragEnded.emit({value: null, event});
+        this.dragEnded.emit({valueHolder: {value: null}, event});
       });
       return;
     }
@@ -479,7 +479,7 @@ export class NgxMatCalendarBody<D = any> implements OnChanges, OnDestroy, AfterV
 
     this._ngZone.run(() => {
       const cell = this._getCellFromElement(cellElement);
-      this.dragEnded.emit({value: cell?.rawValue ?? null, event});
+      this.dragEnded.emit({valueHolder: {value: cell?.rawValue ?? null}, event});
     });
   };
 

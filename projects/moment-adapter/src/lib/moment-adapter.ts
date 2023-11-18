@@ -1,5 +1,3 @@
-
-
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 // Depending on whether rollup is used, moment needs to be imported differently.
@@ -10,7 +8,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment, Moment, MomentFormatSpecification, MomentInput } from 'moment';
-import { NgxMatDateAdapter } from '@angular-material-components/datetime-picker';
+import { NgxMatDateAdapter } from 'projects/datetime-picker/src/lib/core/date-adapter';
 
 const moment = _rollupMoment || _moment;
 
@@ -252,14 +250,14 @@ export class NgxMatMomentAdapter extends NgxMatDateAdapter<Moment> {
   getSecond(date: _moment.Moment): number {
     return date.seconds();
   }
-  setHour(date: _moment.Moment, value: number): void {
-    date.hours(value);
+  setHour(date: {value:_moment.Moment}, value: number): void {
+    date.value.hours(value);
   }
-  setMinute(date: _moment.Moment, value: number): void {
-    date.minutes(value)
+  setMinute(date: {value: _moment.Moment}, value: number): void {
+    date.value.minutes(value)
   }
-  setSecond(date: _moment.Moment, value: number): void {
-    date.seconds(value);
+  setSecond(date: {value: _moment.Moment}, value: number): void {
+    date.value.seconds(value);
   }
 
   /** Creates a Moment instance while respecting the current UTC settings. */

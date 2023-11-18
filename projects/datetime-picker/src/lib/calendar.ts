@@ -469,11 +469,12 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
   /** Handles date selection in the month view. */
   _dateSelected(event: NgxMatCalendarUserEvent<D | null>): void {
 
-    if (event.value && this.selected) {
-      this._dateAdapter.copyTime(event.value as D, this.selected as D);
+    if (event.valueHolder?.value && this.selected) {
+      this._dateAdapter.copyTime(event.valueHolder, this.selected as D);
     }
 
-    const date = event.value;
+    const date = event.valueHolder.value;
+    debugger;
 
     if (
       this.selected instanceof NgxDateRange ||
@@ -513,7 +514,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
   _dragEnded(event: NgxMatCalendarUserEvent<NgxDateRange<D> | null>) {
     if (!this._activeDrag) return;
 
-    if (event.value) {
+    if (event.valueHolder?.value) {
       this._userDragDrop.emit(event as NgxMatCalendarUserEvent<NgxDateRange<D>>);
     }
 
